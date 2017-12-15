@@ -18,12 +18,14 @@
  * *********************************************************************** */
 package org.matsim.run;
 
+// 使用するAPIを予めimportしておく
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy.OverwriteFileSetting;
 import org.matsim.core.scenario.ScenarioUtils;
+
 
 /**
  * @author nagel
@@ -34,20 +36,19 @@ public class RunMatsim {
 	public static void main(String[] args) {
 		
 		Config config ;
-		if ( args.length==0 || args[0]=="" ) {
-			config = ConfigUtils.loadConfig( "scenarios/equil/config.xml" ) ;
-			config.controler().setLastIteration(1);
+		//if ( args.length==0 || args[0]=="" ) {
+			//config = ConfigUtils.loadConfig( "scenarios/equil/astra_config.xml" ) ;
+		    config = ConfigUtils.loadConfig( "scenarios/equil/astra_config.xml" ) ;
+			config.controler().setLastIteration(100);
 			config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );
-		} else {
-			config = ConfigUtils.loadConfig(args[0]) ;
-		}
-		
+			config.controler().setWriteEventsUntilIteration(10);
+		//} else {
+		//	config = ConfigUtils.loadConfig(args[0]) ;
+		//}
 		Scenario scenario = ScenarioUtils.loadScenario(config) ;
-
 		Controler controler = new Controler( scenario ) ;
-
+		config.controler().setWriteEventsUntilIteration(10);
 		controler.run();
-
 	}
 
 }
